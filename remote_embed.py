@@ -2,6 +2,9 @@ import sys, socket, threading, traceback, os, inspect, subprocess, logging
 
 PY3 = sys.version_info[0] == 3
 
+class Disconnect(Exception):
+    pass
+
 class Object():
     def __init__(self, **kw):
         for k, v in kw.items():
@@ -106,12 +109,15 @@ def Embed(
                         s = s.decode(this_coding).encode(remote_coding)
                 else:
                     s = str(s).encode(remote_coding)
-            conn.sendall(s)
+            try:
+                conn.sendall(s)
+            except socket.error:
+                raise Disconnect
         
         def recv():
             code = conn.recv(1024)
             if not code:
-                raise socket.error
+                raise Disconnect
             if this_coding != remote_coding:
                 code = code.decode(remote_coding).encode(this_coding)
             return code.strip()
@@ -137,7 +143,8 @@ def Embed(
                 if code in (b'exit', b'quit', b'exit()', b'quit()'):
                     log.info('The remote debugger exit.')
                     break
-                code = b'#coding=%s\n%s' % (this_coding.encode(this_coding), code)
+                _coding = this_coding.encode(this_coding) if PY3 else this_coding
+                code = b'#coding=%s\n%s' % (_coding, code)
                 try:
                     try:
                         bytecode = compile(code, '<stdin>', 'eval')
@@ -153,7 +160,7 @@ def Embed(
                 except BaseException:
                     send(traceback.format_exc())
                     send('>>> ')
-        except socket.error:
+        except Disconnect:
             log.info('The remote debugger disconnected.')
         except BaseException:
             log.error('Embarassing...')
