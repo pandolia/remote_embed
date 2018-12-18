@@ -22,7 +22,7 @@ Usage
 pip install remote_embed
 ```
 
-Or just put [remote_embed.py](https://github.com/) into your remote project directory.
+Or just put [remote_embed.py](https://raw.githubusercontent.com/pandolia/remote_embed/master/remote_embed.py) into your remote project directory.
 
 2. In remote script, import **remote_embed** and insert **embed** at the line where you want to break:
 
