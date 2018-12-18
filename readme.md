@@ -43,7 +43,7 @@ Run the script on the remote machine, you will see the remote process break at t
 
 3. Run **nc {yourip} {port}** on your local machine to attach to and interact with the remote process. You can read local variables and global variables of the remote process, and input python statements/expressions to be executed/evaluated in the remote process. When you finish, type **exit** or just close the local terminal. This will cause the remote process jump out from interactive mode and resume the execution.
 
-In windows, you can download **nc** from here(https://eternallybored.org/misc/netcat/).
+In windows, you can download **nc** from [here](https://eternallybored.org/misc/netcat/).
 
 If you just want interact with another process from the same machine, just use **embed = Embed(port=6000)**. This will make the process break and listen on **127.0.0.1:6000**. Then you can open another terminal and run **nc 127.0.0.1 6000** to attach to and interact with it.
 
