@@ -1,4 +1,4 @@
-import sys, socket, threading, traceback, os, inspect, subprocess, logging
+import sys, socket, threading, traceback, os, inspect, subprocess
 
 PY3 = sys.version_info[0] == 3
 
@@ -44,14 +44,14 @@ def Embed(
     popup=None,
     log_writer=sys.stderr,
     this_coding=None,
-    remote_coding=None,
+    debugger_coding=None,
     help_info=None
 ):
     if this_coding is None:
         this_coding = 'gb18030' if os.name == 'nt' else 'utf8'
     
-    if remote_coding is None:
-        remote_coding = this_coding
+    if debugger_coding is None:
+        debugger_coding = this_coding
 
     def embed():
         log = Log(log_writer)
@@ -95,20 +95,20 @@ def Embed(
         def send(s):
             if not PY3:
                 if type(s) is unicode:
-                    s = s.encode(remote_coding)
+                    s = s.encode(debugger_coding)
                 else:
                     if type(s) is not str:
                         s = str(s)
-                    if this_coding != remote_coding:
-                        s = s.decode(this_coding).encode(remote_coding)
+                    if this_coding != debugger_coding:
+                        s = s.decode(this_coding).encode(debugger_coding)
             else:
                 if type(s) is str:
-                    s = s.encode(remote_coding)
+                    s = s.encode(debugger_coding)
                 elif type(s) is bytes:
-                    if this_coding != remote_coding:
-                        s = s.decode(this_coding).encode(remote_coding)
+                    if this_coding != debugger_coding:
+                        s = s.decode(this_coding).encode(debugger_coding)
                 else:
-                    s = str(s).encode(remote_coding)
+                    s = str(s).encode(debugger_coding)
             try:
                 conn.sendall(s)
             except socket.error:
@@ -118,8 +118,8 @@ def Embed(
             code = conn.recv(1024)
             if not code:
                 raise Disconnect
-            if this_coding != remote_coding:
-                code = code.decode(remote_coding).encode(this_coding)
+            if this_coding != debugger_coding:
+                code = code.decode(debugger_coding).encode(this_coding)
             return code.strip()
 
         try:
@@ -190,13 +190,15 @@ def _popup(popup, host, port):
 
 if __name__ == '__main__':
     # runs in windows('gb18030'), attaches from linux('utf8')
-    embed = Embed('0.0.0.0', 9999, this_coding='gb18030', remote_coding='utf8')
+    # embed = Embed('0.0.0.0', 9999, this_coding='gb18030', debugger_coding='utf8')
+
+    embed = Embed(popup='./test/nc.exe')
 
     a = 2
 
     def func(x, y, z):
-        print(a, x, y, z)
+        print(a, x, y, z); sys.stdout.flush()
         embed()
-        print(a, x, y, z)
+        print(a, x, y, z); sys.stdout.flush()
 
     func(1, 2, [3])

@@ -90,7 +90,7 @@ def Embed(
     log_writer=sys.stderr,      # the logger's writer
     this_coding=None,           # the coding of the process which you want to debug,
                                 # default to 'gb18030' in windows, and 'utf8' in other platforms
-    remote_coding=None,         # the coding of the debugger, default to `this_coding`
+    debugger_coding=None,       # the coding of the debugger, default to `this_coding`
     help_info=None              # a help infomation printed at the debugger's terminal when it attached,
                                 # default to the line infomation of the break point
 ):
