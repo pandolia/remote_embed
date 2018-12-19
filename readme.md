@@ -11,7 +11,7 @@ When you need remote_embed
 
 * When you want to debug a python process runs at a remote mathine.
 * When you want to debug a GUI python process which without a terminal.
-* When you want to debug a C/C++ process which embed python intepreter in itself.
+* When you want to debug a C/C++ process which embeds python intepreter in itself.
 
 Usage
 -----
