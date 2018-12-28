@@ -45,7 +45,7 @@ Run the script on the remote machine, you will see the remote process break at t
 
 In windows, you can download **nc** from [here](https://eternallybored.org/misc/netcat/).
 
-If you just want to interact with another process at the same machine, just use **embed = Embed(port=6000)**. This will make the process break and listen on **127.0.0.1:6000**. Then you can open another terminal and run **nc 127.0.0.1 6000** to attach to and interact with it.
+If you just want to interact with another process at the same machine, just use **embed = Embed(port=7000)**. This will make the process break and listen on **127.0.0.1:7000**. Then you can open another terminal and run **nc 127.0.0.1 7000** to attach to and interact with it.
 
 If you just use **embed = Embed()**, the process will listen on **127.0.0.1:first_available_port**, and print the port being listened on its terminal(specifically: its sys.stderr).
 
