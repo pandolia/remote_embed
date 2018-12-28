@@ -115,7 +115,10 @@ def Embed(
                 raise Disconnect
         
         def recv():
-            code = conn.recv(1024)
+            try:
+                code = conn.recv(1024)
+            except socket.error:
+                code = ''
             if not code:
                 raise Disconnect
             if this_coding != debugger_coding:

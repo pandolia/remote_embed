@@ -1,4 +1,4 @@
-from remote_embed import Embed; embed = Embed(popup='nc.exe')
+from remote_embed import Embed; embed = Embed('0.0.0.0', 9999, this_coding='gb18030', debugger_coding='utf8')
 
 a = 2
 
